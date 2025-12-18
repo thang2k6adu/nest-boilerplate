@@ -25,7 +25,7 @@
     "prisma:migrate": "prisma migrate dev",
     "prisma:seed": "ts-node prisma/seed.ts",
     "prisma:studio": "prisma studio",
-    "prepare": "husky"
+    "prepare": "husky || git config core.hooksPath .husky || true"
   },
   "dependencies": {
     "@nestjs/common": "^10.3.0",
@@ -128,4 +128,3 @@
     "seed": "ts-node prisma/seed.ts"
   }
 }
-
