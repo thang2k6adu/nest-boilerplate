@@ -21,19 +21,13 @@ export class AllExceptionsFilter implements ExceptionFilter {
 
     const traceId = uuidv4();
     const status =
-      exception instanceof HttpException
-        ? exception.getStatus()
-        : HttpStatus.INTERNAL_SERVER_ERROR;
+      exception instanceof HttpException ? exception.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
 
     const message =
-      exception instanceof HttpException
-        ? exception.getResponse()
-        : 'Internal server error';
+      exception instanceof HttpException ? exception.getResponse() : 'Internal server error';
 
     const errorMessage =
-      typeof message === 'string'
-        ? message
-        : (message as any)?.message || 'Internal server error';
+      typeof message === 'string' ? message : (message as any)?.message || 'Internal server error';
 
     const errorResponse: ApiResponse = {
       error: true,
@@ -51,4 +45,3 @@ export class AllExceptionsFilter implements ExceptionFilter {
     response.status(status).json(errorResponse);
   }
 }
-

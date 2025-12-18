@@ -8,7 +8,7 @@ import {
   MessageBody,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
-import { Logger, UseGuards } from '@nestjs/common';
+import { Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 
@@ -18,13 +18,11 @@ import { ConfigService } from '@nestjs/config';
   },
   namespace: '/',
 })
-export class WebSocketGateway
-  implements OnGatewayConnection, OnGatewayDisconnect
-{
+export class AppWebSocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
   server: Server;
 
-  private readonly logger = new Logger(WebSocketGateway.name);
+  private readonly logger = new Logger(AppWebSocketGateway.name);
 
   constructor(
     private jwtService: JwtService,
@@ -33,7 +31,8 @@ export class WebSocketGateway
 
   async handleConnection(client: Socket) {
     try {
-      const token = client.handshake.auth?.token || client.handshake.headers?.authorization?.split(' ')[1];
+      const token =
+        client.handshake.auth?.token || client.handshake.headers?.authorization?.split(' ')[1];
 
       if (!token) {
         this.logger.warn(`Client ${client.id} connected without token`);
@@ -98,4 +97,3 @@ export class WebSocketGateway
     this.server.to(room).emit(event, data);
   }
 }
-

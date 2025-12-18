@@ -12,9 +12,7 @@ export class NotificationProcessor {
 
   @Process('send-notification')
   async handleSendNotification(job: Job<NotificationJobData>) {
-    this.logger.log(
-      `Processing notification job ${job.id} for user ${job.data.userId}`,
-    );
+    this.logger.log(`Processing notification job ${job.id} for user ${job.data.userId}`);
 
     try {
       await this.notificationsService.sendNotification({
@@ -25,16 +23,11 @@ export class NotificationProcessor {
         data: job.data.data,
       });
 
-      this.logger.log(
-        `Notification sent successfully to user ${job.data.userId}`,
-      );
+      this.logger.log(`Notification sent successfully to user ${job.data.userId}`);
       return { success: true };
     } catch (error) {
-      this.logger.error(
-        `Failed to send notification to user ${job.data.userId}: ${error.message}`,
-      );
+      this.logger.error(`Failed to send notification to user ${job.data.userId}: ${error.message}`);
       throw error;
     }
   }
 }
-

@@ -1,8 +1,4 @@
-import {
-  Injectable,
-  NotFoundException,
-  ConflictException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { PrismaService } from '@/database/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -49,10 +45,7 @@ export class UsersService {
   }
 
   async findAll(query: QueryUsersDto): Promise<PaginatedResponse<any>> {
-    const { skip, take, page, limit } = getPaginationOptions(
-      query.page,
-      query.limit,
-    );
+    const { skip, take, page, limit } = getPaginationOptions(query.page, query.limit);
 
     const where = query.search
       ? {
@@ -172,4 +165,3 @@ export class UsersService {
     return this.update(userId, updateUserDto);
   }
 }
-

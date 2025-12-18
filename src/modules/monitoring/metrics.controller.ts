@@ -16,4 +16,3 @@ export class MetricsController {
     return metrics;
   }
 }
-

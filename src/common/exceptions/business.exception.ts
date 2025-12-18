@@ -5,4 +5,3 @@ export class BusinessException extends HttpException {
     super(message, statusCode);
   }
 }
-

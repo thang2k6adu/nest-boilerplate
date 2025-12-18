@@ -24,4 +24,3 @@ export interface AuthResponse {
   refreshToken: string;
   expiredAt: string;
 }
-

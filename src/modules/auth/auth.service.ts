@@ -1,8 +1,4 @@
-import {
-  Injectable,
-  UnauthorizedException,
-  ConflictException,
-} from '@nestjs/common';
+import { Injectable, UnauthorizedException, ConflictException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
@@ -33,6 +29,7 @@ export class AuthService {
       return null;
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password: _, ...result } = user;
     return result;
   }
@@ -80,7 +77,7 @@ export class AuthService {
 
   async refreshToken(refreshToken: string): Promise<AuthResponse> {
     try {
-      const payload = await this.jwtService.verifyAsync(refreshToken, {
+      await this.jwtService.verifyAsync(refreshToken, {
         secret: this.configService.get<string>('jwt.refreshSecret'),
       });
 
@@ -160,10 +157,7 @@ export class AuthService {
         userId: user.id,
         expiresAt: new Date(
           Date.now() +
-            this.parseExpiresIn(
-              this.configService.get<string>('jwt.refreshExpiresIn'),
-            ) *
-              1000,
+            this.parseExpiresIn(this.configService.get<string>('jwt.refreshExpiresIn')) * 1000,
         ),
       },
     });
@@ -198,4 +192,3 @@ export class AuthService {
     }
   }
 }
-

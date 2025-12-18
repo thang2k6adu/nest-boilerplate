@@ -1,10 +1,12 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { BullModule } from '@nestjs/bull';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { EmailQueue } from './email.queue';
 import { NotificationQueue } from './notification.queue';
 import { EmailProcessor } from './processors/email.processor';
 import { NotificationProcessor } from './processors/notification.processor';
+import { MailModule } from '../mail/mail.module';
+import { NotificationsModule } from '../notifications/notifications.module';
 
 @Module({
   imports: [
@@ -25,13 +27,11 @@ import { NotificationProcessor } from './processors/notification.processor';
       },
       inject: [ConfigService],
     }),
-    BullModule.registerQueue(
-      { name: 'email' },
-      { name: 'notification' },
-    ),
+    BullModule.registerQueue({ name: 'email' }, { name: 'notification' }),
+    MailModule,
+    forwardRef(() => NotificationsModule),
   ],
   providers: [EmailQueue, NotificationQueue, EmailProcessor, NotificationProcessor],
   exports: [EmailQueue, NotificationQueue],
 })
 export class QueuesModule {}
-

@@ -9,12 +9,7 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import {
-  ApiTags,
-  ApiOperation,
-  ApiResponse,
-  ApiBearerAuth,
-} from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -78,10 +73,7 @@ export class UsersController {
   @Patch('profile')
   @ApiOperation({ summary: 'Update current user profile' })
   @ApiResponse({ status: 200, description: 'Profile updated successfully' })
-  updateProfile(
-    @CurrentUser() user: any,
-    @Body() updateUserDto: UpdateUserDto,
-  ) {
+  updateProfile(@CurrentUser() user: any, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.updateProfile(user.id, updateUserDto);
   }
 
@@ -109,4 +101,3 @@ export class UsersController {
     return this.usersService.remove(id);
   }
 }
-

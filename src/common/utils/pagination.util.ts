@@ -1,4 +1,4 @@
-import { PaginationMeta, PaginatedResponse } from '../interfaces/api-response.interface';
+import { PaginatedResponse } from '../interfaces/api-response.interface';
 
 export interface PaginationOptions {
   page?: number;
@@ -47,4 +47,3 @@ export function getPaginationOptions(
     limit: pageLimit,
   };
 }
-

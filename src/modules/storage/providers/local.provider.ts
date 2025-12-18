@@ -19,7 +19,9 @@ export class LocalProvider {
     this.ensureDirectoryExists();
   }
 
-  async upload(options: UploadOptions): Promise<{ url: string; key: string; size: number; mimetype: string }> {
+  async upload(
+    options: UploadOptions,
+  ): Promise<{ url: string; key: string; size: number; mimetype: string }> {
     const filePath = join(this.destination, options.key);
     await writeFile(filePath, options.buffer);
 
@@ -40,15 +42,18 @@ export class LocalProvider {
     }
   }
 
-  async getSignedUrl(key: string, expiresIn?: number): Promise<string> {
+  async getSignedUrl(
+    key: string,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _expiresIn?: number,
+  ): Promise<string> {
     // For local storage, return the public URL
     return `/uploads/${key}`;
   }
 
-  private async ensureDirectoryExists(): void {
+  private async ensureDirectoryExists(): Promise<void> {
     if (!existsSync(this.destination)) {
       await mkdir(this.destination, { recursive: true });
     }
   }
 }
-

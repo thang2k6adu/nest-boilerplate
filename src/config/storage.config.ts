@@ -17,4 +17,3 @@ export default registerAs('storage', () => ({
     apiSecret: process.env.CLOUDINARY_API_SECRET,
   },
 }));
-

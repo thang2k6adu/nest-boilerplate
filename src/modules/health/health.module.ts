@@ -8,4 +8,3 @@ import { PrismaService } from '@/database/prisma.service';
   providers: [HealthService, PrismaService],
 })
 export class HealthModule {}
-

@@ -21,4 +21,3 @@ export class UserUpdatedHandler implements IEventHandler<UserUpdatedEvent> {
     // Handle user updated event
   }
 }
-

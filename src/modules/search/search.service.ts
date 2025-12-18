@@ -30,12 +30,13 @@ export class SearchService {
 
     this.client = new Client({
       node,
-      auth: username && password
-        ? {
-            username,
-            password,
-          }
-        : undefined,
+      auth:
+        username && password
+          ? {
+              username,
+              password,
+            }
+          : undefined,
     });
   }
 
@@ -131,4 +132,3 @@ export class SearchService {
     }
   }
 }
-

@@ -29,7 +29,7 @@ export class NotificationsService {
 
   async sendNotification(options: SendNotificationOptions): Promise<void> {
     // Save notification to database
-    const notification = await this.prisma.notification.create({
+    await this.prisma.notification.create({
       data: {
         userId: options.userId,
         type: options.type === 'all' ? 'email' : options.type,
@@ -50,7 +50,12 @@ export class NotificationsService {
     } else {
       switch (options.type) {
         case 'email':
-          await this.emailChannel.send(options.userId, options.title, options.message, options.data);
+          await this.emailChannel.send(
+            options.userId,
+            options.title,
+            options.message,
+            options.data,
+          );
           break;
         case 'sms':
           await this.smsChannel.send(options.userId, options.title, options.message, options.data);
@@ -59,7 +64,12 @@ export class NotificationsService {
           await this.pushChannel.send(options.userId, options.title, options.message, options.data);
           break;
         case 'websocket':
-          await this.websocketChannel.send(options.userId, options.title, options.message, options.data);
+          await this.websocketChannel.send(
+            options.userId,
+            options.title,
+            options.message,
+            options.data,
+          );
           break;
       }
     }
@@ -111,4 +121,3 @@ export class NotificationsService {
     });
   }
 }
-

@@ -6,9 +6,7 @@ import { Prisma } from '@prisma/client';
 export class DatabaseService {
   constructor(private prisma: PrismaService) {}
 
-  async transaction<T>(
-    callback: (tx: Prisma.TransactionClient) => Promise<T>,
-  ): Promise<T> {
+  async transaction<T>(callback: (tx: Prisma.TransactionClient) => Promise<T>): Promise<T> {
     return this.prisma.$transaction(callback, {
       maxWait: 5000,
       timeout: 10000,
@@ -36,4 +34,3 @@ export class DatabaseService {
     throw lastError!;
   }
 }
-

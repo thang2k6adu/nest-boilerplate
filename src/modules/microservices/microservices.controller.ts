@@ -40,4 +40,3 @@ export class MicroservicesController {
     return { id: data.id, name: 'User Name' };
   }
 }
-

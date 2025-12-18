@@ -43,7 +43,8 @@ export class StorageController {
   async uploadFile(
     @UploadedFile() file: Express.Multer.File,
     @Query('folder') folder?: string,
-    @CurrentUser() user?: any,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    @CurrentUser() _user?: any,
   ) {
     return this.storageService.uploadFile({
       file,
@@ -53,10 +54,7 @@ export class StorageController {
 
   @Get('signed-url/:key')
   @ApiOperation({ summary: 'Get signed URL for file' })
-  async getSignedUrl(
-    @Param('key') key: string,
-    @Query('expiresIn') expiresIn?: number,
-  ) {
+  async getSignedUrl(@Param('key') key: string, @Query('expiresIn') expiresIn?: number) {
     return {
       url: await this.storageService.getSignedUrl(key, expiresIn),
     };
@@ -69,4 +67,3 @@ export class StorageController {
     return { message: 'File deleted successfully' };
   }
 }
-

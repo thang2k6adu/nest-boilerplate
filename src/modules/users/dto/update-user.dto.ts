@@ -23,4 +23,3 @@ export class UpdateUserDto {
   @IsOptional()
   lastName?: string;
 }
-

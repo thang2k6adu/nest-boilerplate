@@ -11,13 +11,21 @@ export class MicroservicesService {
     @Inject('NATS_SERVICE') private natsClient: ClientProxy,
   ) {}
 
-  async emitEvent(pattern: string, data: any, transport: 'rabbitmq' | 'kafka' | 'nats' = 'rabbitmq') {
+  async emitEvent(
+    pattern: string,
+    data: any,
+    transport: 'rabbitmq' | 'kafka' | 'nats' = 'rabbitmq',
+  ) {
     const client = this.getClient(transport);
     client.emit(pattern, data);
     this.logger.log(`Event emitted: ${pattern} via ${transport}`);
   }
 
-  async sendMessage(pattern: string, data: any, transport: 'rabbitmq' | 'kafka' | 'nats' = 'rabbitmq') {
+  async sendMessage(
+    pattern: string,
+    data: any,
+    transport: 'rabbitmq' | 'kafka' | 'nats' = 'rabbitmq',
+  ) {
     const client = this.getClient(transport);
     return client.send(pattern, data).toPromise();
   }
@@ -35,4 +43,3 @@ export class MicroservicesService {
     }
   }
 }
-

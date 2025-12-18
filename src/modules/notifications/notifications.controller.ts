@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Param, Body, UseGuards, Query } from '@nestjs/common';
+import { Controller, Get, Post, Param, UseGuards, Query } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { NotificationsService } from './notifications.service';
 import { JwtAuthGuard } from '@/common/guards/jwt-auth.guard';
@@ -13,10 +13,7 @@ export class NotificationsController {
 
   @Get()
   @ApiOperation({ summary: 'Get user notifications' })
-  async getNotifications(
-    @CurrentUser() user: any,
-    @Query('limit') limit?: number,
-  ) {
+  async getNotifications(@CurrentUser() user: any, @Query('limit') limit?: number) {
     return this.notificationsService.getUserNotifications(user.id, limit);
   }
 
@@ -34,4 +31,3 @@ export class NotificationsController {
     return { message: 'All notifications marked as read' };
   }
 }
-

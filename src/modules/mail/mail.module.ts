@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { MailService } from './mail.service';
 import mailConfig from '../../config/mail.config';
 
@@ -9,4 +9,3 @@ import mailConfig from '../../config/mail.config';
   exports: [MailService],
 })
 export class MailModule {}
-

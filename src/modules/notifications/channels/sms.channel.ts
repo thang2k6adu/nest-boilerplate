@@ -8,11 +8,11 @@ export class SmsChannel {
     userId: string,
     title: string,
     message: string,
-    data?: Record<string, any>,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _data?: Record<string, any>,
   ): Promise<void> {
     // Implement SMS sending logic (Twilio, AWS SNS, etc.)
     this.logger.log(`SMS sent to user ${userId}: ${title} - ${message}`);
     // Placeholder implementation
   }
 }
-

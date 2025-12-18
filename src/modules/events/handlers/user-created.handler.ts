@@ -22,4 +22,3 @@ export class UserCreatedHandler implements IEventHandler<UserCreatedEvent> {
     // e.g., send welcome email, create default settings, etc.
   }
 }
-

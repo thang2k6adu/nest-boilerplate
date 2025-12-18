@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { WebSocketGateway } from './websocket.gateway';
+import { AppWebSocketGateway } from './websocket.gateway';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
@@ -13,8 +13,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       inject: [ConfigService],
     }),
   ],
-  providers: [WebSocketGateway],
-  exports: [WebSocketGateway],
+  providers: [AppWebSocketGateway],
+  exports: [AppWebSocketGateway],
 })
 export class WebSocketModule {}
-

@@ -41,12 +41,7 @@ export class MetricsService {
     });
   }
 
-  recordHttpRequest(
-    method: string,
-    route: string,
-    statusCode: number,
-    duration: number,
-  ) {
+  recordHttpRequest(method: string, route: string, statusCode: number, duration: number) {
     this.httpRequestDuration.observe(
       { method, route, status_code: statusCode.toString() },
       duration,
@@ -66,4 +61,3 @@ export class MetricsService {
     return promClient.register.metrics();
   }
 }
-

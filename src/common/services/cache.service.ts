@@ -22,11 +22,7 @@ export class CacheService {
     await this.cacheManager.reset();
   }
 
-  async getOrSet<T>(
-    key: string,
-    factory: () => Promise<T>,
-    ttl?: number,
-  ): Promise<T> {
+  async getOrSet<T>(key: string, factory: () => Promise<T>, ttl?: number): Promise<T> {
     const cached = await this.get<T>(key);
     if (cached !== undefined) {
       return cached;
@@ -46,10 +42,12 @@ export class CacheService {
     }
   }
 
-  private async getKeysByPattern(pattern: string): Promise<string[]> {
+  private async getKeysByPattern(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _pattern: string,
+  ): Promise<string[]> {
     // This is a simplified version
     // In production, use Redis SCAN command for pattern matching
     return [];
   }
 }
-

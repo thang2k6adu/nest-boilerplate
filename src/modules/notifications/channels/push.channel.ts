@@ -8,11 +8,11 @@ export class PushChannel {
     userId: string,
     title: string,
     message: string,
-    data?: Record<string, any>,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _data?: Record<string, any>,
   ): Promise<void> {
     // Implement push notification logic (FCM, APNS, etc.)
     this.logger.log(`Push notification sent to user ${userId}: ${title} - ${message}`);
     // Placeholder implementation
   }
 }
-

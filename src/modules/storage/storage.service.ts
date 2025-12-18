@@ -111,4 +111,3 @@ export class StorageService {
     return folder ? `${folder}/${filename}` : filename;
   }
 }
-

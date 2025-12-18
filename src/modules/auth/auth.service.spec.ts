@@ -3,12 +3,9 @@ import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { AuthService } from './auth.service';
 import { PrismaService } from '@/database/prisma.service';
-import { UnauthorizedException, ConflictException } from '@nestjs/common';
 
 describe('AuthService', () => {
   let service: AuthService;
-  let prisma: PrismaService;
-  let jwtService: JwtService;
 
   const mockPrismaService = {
     user: {
@@ -60,8 +57,6 @@ describe('AuthService', () => {
     }).compile();
 
     service = module.get<AuthService>(AuthService);
-    prisma = module.get<PrismaService>(PrismaService);
-    jwtService = module.get<JwtService>(JwtService);
   });
 
   afterEach(() => {
@@ -82,6 +77,7 @@ describe('AuthService', () => {
       };
 
       mockPrismaService.user.findUnique.mockResolvedValue(mockUser);
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
       jest.spyOn(require('bcrypt'), 'compare').mockResolvedValue(true);
 
       const result = await service.validateUser('test@example.com', 'password');
@@ -99,4 +95,3 @@ describe('AuthService', () => {
     });
   });
 });
-

@@ -64,7 +64,7 @@ import { ValidationPipe } from './common/pipes/validation.pipe';
     }),
     ThrottlerModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: (configService: ConfigService) => [
+      useFactory: () => [
         {
           ttl: 60000, // 1 minute
           limit: 100, // 100 requests per minute
@@ -88,10 +88,7 @@ import { ValidationPipe } from './common/pipes/validation.pipe';
           defaultMeta: { service: 'nest-boilerplate' },
           transports: [
             new winston.transports.Console({
-              format: winston.format.combine(
-                winston.format.colorize(),
-                winston.format.simple(),
-              ),
+              format: winston.format.combine(winston.format.colorize(), winston.format.simple()),
             }),
             new winston.transports.File({
               filename: 'logs/error.log',
@@ -153,4 +150,3 @@ export class AppModule implements NestModule {
     consumer.apply(LoggerMiddleware).forRoutes('*');
   }
 }
-

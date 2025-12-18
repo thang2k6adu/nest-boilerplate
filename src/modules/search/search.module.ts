@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { SearchService } from './search.service';
 import { SearchController } from './search.controller';
 import searchConfig from '../../config/search.config';
@@ -11,4 +11,3 @@ import searchConfig from '../../config/search.config';
   exports: [SearchService],
 })
 export class SearchModule {}
-

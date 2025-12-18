@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { StorageService } from './storage.service';
 import { S3Provider } from './providers/s3.provider';
 import { LocalProvider } from './providers/local.provider';
@@ -11,4 +11,3 @@ import storageConfig from '../../config/storage.config';
   exports: [StorageService],
 })
 export class StorageModule {}
-

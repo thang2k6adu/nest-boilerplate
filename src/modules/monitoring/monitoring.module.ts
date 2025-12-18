@@ -9,4 +9,3 @@ import { TracingService } from './tracing.service';
   exports: [MetricsService, TracingService],
 })
 export class MonitoringModule {}
-

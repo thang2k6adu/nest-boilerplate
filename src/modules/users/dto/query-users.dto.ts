@@ -23,4 +23,3 @@ export class QueryUsersDto {
   @Type(() => String)
   search?: string;
 }
-

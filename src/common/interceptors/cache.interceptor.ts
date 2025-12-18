@@ -1,16 +1,11 @@
-import {
-  Injectable,
-  NestInterceptor,
-  ExecutionContext,
-  CallHandler,
-  Inject,
-} from '@nestjs/common';
+import { Injectable, NestInterceptor, ExecutionContext, CallHandler, Inject } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
 import { Observable, of } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { CACHE_KEY_METADATA, CACHE_TTL_METADATA } from '../decorators/cache-key.decorator';
+import { CACHE_KEY_METADATA } from '../decorators/cache-key.decorator';
+import { CACHE_TTL_METADATA } from '../decorators/cache-ttl.decorator';
 
 @Injectable()
 export class HttpCacheInterceptor implements NestInterceptor {
@@ -19,12 +14,9 @@ export class HttpCacheInterceptor implements NestInterceptor {
     private reflector: Reflector,
   ) {}
 
-  async intercept(
-    context: ExecutionContext,
-    next: CallHandler,
-  ): Promise<Observable<any>> {
+  async intercept(context: ExecutionContext, next: CallHandler): Promise<Observable<any>> {
     const request = context.switchToHttp().getRequest();
-    const { method, url } = request;
+    const { method } = request;
 
     // Only cache GET requests
     if (method !== 'GET') {
@@ -57,10 +49,10 @@ export class HttpCacheInterceptor implements NestInterceptor {
   }
 
   private getCacheKey(context: ExecutionContext): string | undefined {
-    const cacheKey = this.reflector.getAllAndOverride<string>(
-      CACHE_KEY_METADATA,
-      [context.getHandler(), context.getClass()],
-    );
+    const cacheKey = this.reflector.getAllAndOverride<string>(CACHE_KEY_METADATA, [
+      context.getHandler(),
+      context.getClass(),
+    ]);
 
     if (cacheKey) {
       const request = context.switchToHttp().getRequest();
@@ -80,4 +72,3 @@ export class HttpCacheInterceptor implements NestInterceptor {
     );
   }
 }
-

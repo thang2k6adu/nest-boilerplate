@@ -20,9 +20,14 @@ model User {
   isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  deletedAt DateTime?
 
   refreshTokens RefreshToken[]
+  notifications Notification[]
+  files         File[]
 
+  @@index([email])
+  @@index([role])
   @@map("users")
 }
 
@@ -70,30 +75,11 @@ model File {
   updatedAt   DateTime @updatedAt
   deletedAt   DateTime?
 
+  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@index([userId])
   @@index([key])
   @@map("files")
-}
-
-model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  password  String
-  firstName String?
-  lastName  String?
-  role      Role     @default(USER)
-  isActive  Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  deletedAt DateTime?
-
-  refreshTokens RefreshToken[]
-  notifications Notification[]
-  files         File[]
-
-  @@index([email])
-  @@index([role])
-  @@map("users")
 }
 
 enum Role {

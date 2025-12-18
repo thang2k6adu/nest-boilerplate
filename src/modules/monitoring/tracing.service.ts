@@ -14,9 +14,6 @@ export class TracingService {
   }
 
   logSpan(traceId: string, spanId: string, operation: string, duration: number) {
-    this.logger.debug(
-      `[${traceId}][${spanId}] ${operation} completed in ${duration}ms`,
-    );
+    this.logger.debug(`[${traceId}][${spanId}] ${operation} completed in ${duration}ms`);
   }
 }
-

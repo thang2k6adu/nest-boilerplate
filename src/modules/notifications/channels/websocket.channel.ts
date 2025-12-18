@@ -40,4 +40,3 @@ export class WebsocketChannel {
     this.logger.log(`Client disconnected: ${client.id}`);
   }
 }
-

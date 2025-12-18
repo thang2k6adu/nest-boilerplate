@@ -5,12 +5,8 @@ import { UserCreatedHandler } from './handlers/user-created.handler';
 import { UserUpdatedHandler } from './handlers/user-updated.handler';
 
 @Module({
-  imports: [
-    EventEmitterModule.forRoot(),
-    CqrsModule,
-  ],
+  imports: [EventEmitterModule.forRoot(), CqrsModule],
   providers: [UserCreatedHandler, UserUpdatedHandler],
   exports: [EventEmitterModule, CqrsModule],
 })
 export class EventsModule {}
-

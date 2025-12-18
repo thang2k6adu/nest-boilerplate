@@ -8,4 +8,3 @@ export default registerAs('mail', () => ({
   password: process.env.MAIL_PASSWORD,
   from: process.env.MAIL_FROM || 'noreply@example.com',
 }));
-

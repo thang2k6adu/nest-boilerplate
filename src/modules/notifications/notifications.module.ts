@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { NotificationsService } from './notifications.service';
 import { NotificationsController } from './notifications.controller';
 import { EmailChannel } from './channels/email.channel';
@@ -10,7 +10,7 @@ import { MailModule } from '../mail/mail.module';
 import { QueuesModule } from '../queues/queues.module';
 
 @Module({
-  imports: [MailModule, QueuesModule],
+  imports: [MailModule, forwardRef(() => QueuesModule)],
   controllers: [NotificationsController],
   providers: [
     NotificationsService,
@@ -23,4 +23,3 @@ import { QueuesModule } from '../queues/queues.module';
   exports: [NotificationsService],
 })
 export class NotificationsModule {}
-

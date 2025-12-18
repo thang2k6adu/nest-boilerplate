@@ -5,4 +5,3 @@ export default registerAs('app', () => ({
   port: parseInt(process.env.PORT || '3000', 10),
   name: process.env.APP_NAME || 'nest-boilerplate',
 }));
-

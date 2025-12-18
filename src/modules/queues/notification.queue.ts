@@ -43,4 +43,3 @@ export class NotificationQueue {
     return this.notificationQueue.addBulk(jobs);
   }
 }
-

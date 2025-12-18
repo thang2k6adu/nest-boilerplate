@@ -105,7 +105,11 @@
     "ts-loader": "^9.5.1",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "amqplib": "^0.10.3",
+    "amqp-connection-manager": "^4.1.14",
+    "kafkajs": "^2.2.4",
+    "nats": "^2.18.0"
   },
   "jest": {
     "moduleFileExtensions": [

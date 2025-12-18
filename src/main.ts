@@ -15,9 +15,10 @@ async function bootstrap() {
 
   // CORS
   app.enableCors({
-    origin: configService.get<string>('app.nodeEnv') === 'production'
-      ? process.env.CORS_ORIGIN?.split(',') || []
-      : true,
+    origin:
+      configService.get<string>('app.nodeEnv') === 'production'
+        ? process.env.CORS_ORIGIN?.split(',') || []
+        : true,
     credentials: true,
   });
 
@@ -71,4 +72,3 @@ async function bootstrap() {
 }
 
 bootstrap();
-
