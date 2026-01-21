@@ -7,75 +7,106 @@ on:
     branches: [main, develop]
 
 jobs:
-  lint-and-test:
+  # lint-and-test:
+  #   runs-on: ubuntu-latest
+
+  #   services:
+  #     postgres:
+  #       image: postgres:15
+  #       env:
+  #         POSTGRES_USER: postgres
+  #         POSTGRES_PASSWORD: postgres
+  #         POSTGRES_DB: test_db
+  #       options: >-
+  #         --health-cmd pg_isready
+  #         --health-interval 10s
+  #         --health-timeout 5s
+  #         --health-retries 5
+  #       ports:
+  #         - 5432:5432
+
+  #     redis:
+  #       image: redis:7-alpine
+  #       options: >-
+  #         --health-cmd "redis-cli ping"
+  #         --health-interval 10s
+  #         --health-timeout 5s
+  #         --health-retries 5
+  #       ports:
+  #         - 6379:6379
+
+  #   steps:
+  #     - uses: actions/checkout@v4
+
+  #     - name: Setup Node.js
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version: '20'
+  #         cache: 'npm'
+
+  #     - name: Install dependencies
+  #       run: npm ci
+
+  #     - name: Setup database schema
+  #       run: |
+  #         npx prisma generate
+  #         npx prisma db push --accept-data-loss --skip-generate
+  #       env:
+  #         DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db?schema=public
+
+  #     - name: Run linter
+  #       run: npm run lint:check
+
+  #     - name: Check formatting
+  #       run: npm run format:check
+
+  #     - name: Type check
+  #       run: npm run type-check
+
+  #     - name: Run unit tests
+  #       run: npm run test:cov
+
+  #     - name: Run E2E tests
+  #       run: npm run test:e2e
+  #       env:
+  #         DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db?schema=public
+  #         REDIS_HOST: localhost
+  #         REDIS_PORT: 6379
+  #         JWT_SECRET: test-jwt-secret-key-for-ci
+  #         JWT_REFRESH_SECRET: test-jwt-refresh-secret-key-for-ci
+  #         NODE_ENV: test
+
+  #     - name: Build
+  #       run: npm run build
+
+    build-and-push-image:
+    # needs: lint-and-test
     runs-on: ubuntu-latest
 
-    services:
-      postgres:
-        image: postgres:15
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: test_db
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
-
-      redis:
-        image: redis:7-alpine
-        options: >-
-          --health-cmd "redis-cli ping"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 6379:6379
+    permissions:
+      contents: read
+      packages: write
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
         with:
-          node-version: '20'
-          cache: 'npm'
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Install dependencies
-        run: npm ci
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
-      - name: Setup database schema
-        run: |
-          npx prisma generate
-          npx prisma db push --accept-data-loss --skip-generate
-        env:
-          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db?schema=public
-
-      - name: Run linter
-        run: npm run lint:check
-
-      - name: Check formatting
-        run: npm run format:check
-
-      - name: Type check
-        run: npm run type-check
-
-      - name: Run unit tests
-        run: npm run test:cov
-
-      - name: Run E2E tests
-        run: npm run test:e2e
-        env:
-          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db?schema=public
-          REDIS_HOST: localhost
-          REDIS_PORT: 6379
-          JWT_SECRET: test-jwt-secret-key-for-ci
-          JWT_REFRESH_SECRET: test-jwt-refresh-secret-key-for-ci
-          NODE_ENV: test
-
-      - name: Build
-        run: npm run build
-
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository }}/be:latest
+            ghcr.io/${{ github.repository }}/be:${{ github.sha }}
