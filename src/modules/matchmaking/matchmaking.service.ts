@@ -138,6 +138,8 @@ export class MatchmakingService {
       throw new ConflictException('User not connected');
     }
 
+    // TODO: cái này có thể gây race condition, 2 là nó chỉ tìm first thôi, các cái sau thỏa mãn thì ko có
+    // Có thể thêm current member
     const availableRoom = await this.prisma.room.findFirst({
       where: {
         type: 'MATCH',
@@ -153,8 +155,13 @@ export class MatchmakingService {
       },
     });
 
+    this.logger.log(
+      `Current member: ${availableRoom?.members.length} / ${availableRoom?.maxMembers}`,
+    );
+
     if (availableRoom && availableRoom.members.length < availableRoom.maxMembers) {
       // Join available room và emit event ngay lập tức
+      // Nếu là member rồi thì sao??
       await this.prisma.roomMember.create({
         data: {
           roomId: availableRoom.id,
