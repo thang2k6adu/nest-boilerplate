@@ -47,9 +47,7 @@ import { ValidationPipe } from './common/pipes/validation.pipe';
       isGlobal: true,
       load: [appConfig, databaseConfig, jwtConfig, redisConfig, firebaseConfig, livekitConfig],
       validate,
-      transformOptions: {
-        enableImplicitConversion: true,
-      },
+      transform: true,
       envFilePath: ['.env.local', '.env'],
     }),
     CacheModule.registerAsync({
