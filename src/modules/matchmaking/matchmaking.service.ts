@@ -33,6 +33,7 @@ export class MatchmakingService {
       roomStatus: result?.room?.status,
       roomType: result?.room?.type,
     });
+    console.log('Test ArgoCD deployment');
 
     return result;
   }
