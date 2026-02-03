@@ -406,5 +406,4 @@ nest-boilerplate/
 
 ## License
 
-check ArgoCD images updater
 MIT

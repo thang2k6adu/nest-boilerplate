@@ -35,6 +35,7 @@ async function bootstrap() {
   }
   app.useWebSocketAdapter(socketAdapter);
 
+  // Just test argoCD
   // Global prefix
   app.setGlobalPrefix('api');
 
