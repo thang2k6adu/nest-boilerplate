@@ -404,7 +404,7 @@ nest-boilerplate/
 4. Viết tests cho feature mới
 5. Tạo Pull Request với mô tả rõ ràng
 
-test argocd 2
+test argocd 3
 
 ## License
 
