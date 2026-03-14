@@ -8,6 +8,7 @@ import { ConfigService } from '@nestjs/config';
 import { S3Provider } from './providers/s3.provider';
 import { LocalProvider } from './providers/local.provider';
 import { PrismaService } from '@/database/prisma.service';
+import { FileProvider } from '@prisma/client';
 import * as sharp from 'sharp';
 
 export interface UploadFileOptions {
@@ -63,13 +64,11 @@ export class StorageService {
     // Save record to database
     const fileRecord = await this.prisma.file.create({
       data: {
-        key: result.key,
-        url: result.url,
+        path: result.key,
         filename: options.file.originalname,
         mimetype: result.mimetype,
         size: result.size,
-        provider: this.providerType,
-        folder: options.folder,
+        provider: this.providerType.toUpperCase() as FileProvider,
         userId: options.userId,
       },
     });
@@ -101,10 +100,10 @@ export class StorageService {
 
     // 3. Delete file from storage
     try {
-      await this.provider.delete(fileRecord.key);
+      await this.provider.delete(fileRecord.path);
     } catch (error) {
       // Log error but proceed to delete from DB or handle accordingly
-      console.error(`Failed to delete file from storage: ${fileRecord.key}`, error);
+      console.error(`Failed to delete file from storage: ${fileRecord.path}`, error);
     }
 
     // 4. Delete record from DB

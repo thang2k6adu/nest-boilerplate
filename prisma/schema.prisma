@@ -44,9 +44,9 @@ model RefreshToken {
 }
 
 model Notification {
-  id        String    @id @default(uuid())
+  id        String           @id @default(uuid())
   userId    String
-  type      String
+  type      NotificationType
   title     String
   message   String
   data      Json?
@@ -61,23 +61,33 @@ model Notification {
 }
 
 model File {
-  id        String    @id @default(uuid())
-  key       String    @unique
-  url       String
+  id        String       @id @default(uuid())
+  path      String       @unique
   filename  String
   mimetype  String
   size      Int
-  provider  String    @default("local")
-  folder    String?
+  provider  FileProvider @default(LOCAL)
   userId    String?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
   deletedAt DateTime?
-  user      User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user      User?        @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
-  @@index([key])
+  @@index([path])
   @@map("files")
+}
+
+enum NotificationType {
+  SYSTEM
+  ACCOUNT
+  MARKETING
+}
+
+enum FileProvider {
+  LOCAL
+  S3
+  CLOUDINARY
 }
 
 enum Role {

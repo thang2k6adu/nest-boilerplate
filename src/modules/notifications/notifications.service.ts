@@ -6,6 +6,8 @@ import { SmsChannel } from './channels/sms.channel';
 import { PushChannel } from './channels/push.channel';
 import { WebsocketChannel } from './channels/websocket.channel';
 
+import { NotificationType } from '@prisma/client';
+
 export interface SendNotificationOptions {
   userId: string;
   type: 'email' | 'sms' | 'push' | 'websocket' | 'all';
@@ -32,7 +34,7 @@ export class NotificationsService {
     await this.prisma.notification.create({
       data: {
         userId: options.userId,
-        type: options.type === 'all' ? 'email' : options.type,
+        type: NotificationType.SYSTEM,
         title: options.title,
         message: options.message,
         data: options.data || {},
