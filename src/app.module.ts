@@ -9,10 +9,6 @@ import { redisStore } from 'cache-manager-redis-yet';
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
 import { HealthModule } from './modules/health/health.module';
-import { TasksModule } from './modules/tasks/tasks.module';
-import { RoomsModule } from './modules/rooms/rooms.module';
-import { MatchmakingModule } from './modules/matchmaking/matchmaking.module';
-import { LiveKitModule } from './modules/livekit/livekit.module';
 import { QueuesModule } from './modules/queues/queues.module';
 import { EventsModule } from './modules/events/events.module';
 import { MailModule } from './modules/mail/mail.module';
@@ -22,17 +18,14 @@ import { WebSocketModule } from './modules/websocket/websocket.module';
 import { SearchModule } from './modules/search/search.module';
 import { MonitoringModule } from './modules/monitoring/monitoring.module';
 import { MicroservicesModule } from './modules/microservices/microservices.module';
-import { TrackingModule } from './modules/tracking/tracking.module';
 import { PrismaService } from './database/prisma.service';
 import { DatabaseService } from './database/database.service';
 import { CacheService } from './common/services/cache.service';
-import { LiveKitService } from './common/services/livekit.service';
 import appConfig from './config/app.config';
 import databaseConfig from './config/database.config';
 import jwtConfig from './config/jwt.config';
 import redisConfig from './config/redis.config';
 import firebaseConfig from './config/firebase.config';
-import livekitConfig from './config/livekit.config';
 import { validate } from './config/config.schema';
 import { LoggerMiddleware } from './common/middleware/logger.middleware';
 import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
@@ -45,7 +38,7 @@ import { ValidationPipe } from './common/pipes/validation.pipe';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [appConfig, databaseConfig, jwtConfig, redisConfig, firebaseConfig, livekitConfig],
+      load: [appConfig, databaseConfig, jwtConfig, redisConfig, firebaseConfig],
       validate,
       envFilePath: ['.env.local', '.env'],
     }),
@@ -148,10 +141,6 @@ import { ValidationPipe } from './common/pipes/validation.pipe';
     AuthModule,
     UsersModule,
     HealthModule,
-    TasksModule,
-    RoomsModule,
-    MatchmakingModule,
-    LiveKitModule,
     QueuesModule,
     EventsModule,
     MailModule,
@@ -161,13 +150,11 @@ import { ValidationPipe } from './common/pipes/validation.pipe';
     SearchModule,
     MonitoringModule,
     MicroservicesModule,
-    TrackingModule,
   ],
   providers: [
     PrismaService,
     DatabaseService,
     CacheService,
-    LiveKitService,
     {
       provide: APP_GUARD,
       useClass: ThrottlerGuard,

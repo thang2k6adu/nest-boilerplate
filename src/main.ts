@@ -4,7 +4,6 @@ import { ConfigService } from '@nestjs/config';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import helmet from 'helmet';
 import { AppModule } from './app.module';
-import { SocketIoAdapter } from './common/adapters/socket-io.adapter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -14,28 +13,15 @@ async function bootstrap() {
   // Security
   app.use(helmet());
 
-  // CORS configuration
-  const corsOrigin =
-    configService.get<string>('app.nodeEnv') === 'production'
-      ? process.env.CORS_ORIGIN?.split(',') || []
-      : ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:3000'];
-
-  // HTTP CORS
+  // CORS
   app.enableCors({
-    origin: corsOrigin,
+    origin:
+      configService.get<string>('app.nodeEnv') === 'production'
+        ? process.env.CORS_ORIGIN?.split(',') || []
+        : true,
     credentials: true,
   });
 
-  // WebSocket CORS with Redis adapter (for horizontal scaling)
-  const socketAdapter = new SocketIoAdapter(app, configService);
-  try {
-    await socketAdapter.connectToRedis();
-  } catch (error) {
-    console.warn('Socket.IO Redis adapter failed to connect, continuing without it');
-  }
-  app.useWebSocketAdapter(socketAdapter);
-
-  // Just test argoCD
   // Global prefix
   app.setGlobalPrefix('api');
 
@@ -80,7 +66,7 @@ async function bootstrap() {
 
   const port = configService.get<number>('app.port');
   await app.listen(port, '0.0.0.0');
-  
+
   console.log(`🚀 Application is running on: http://localhost:${port}/api`);
   console.log(`📚 Swagger documentation: http://localhost:${port}/api/docs`);
 }
