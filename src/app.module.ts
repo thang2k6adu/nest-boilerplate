@@ -39,8 +39,8 @@ import { ValidationPipe } from './common/pipes/validation.pipe';
 @Module({
   imports: [
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'uploads'),
-      serveRoot: '/uploads/',
+      rootPath: join(process.cwd(), 'uploads'),
+      serveRoot: '/uploads',
     }),
     ConfigModule.forRoot({
       isGlobal: true,
