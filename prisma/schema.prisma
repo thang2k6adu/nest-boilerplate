@@ -9,31 +9,26 @@ datasource db {
 }
 
 model User {
-  id               String            @id @default(uuid())
-  email            String            @unique
-  password         String?
-  firstName        String?
-  lastName         String?
-  role             Role              @default(USER)
-  isActive         Boolean           @default(true)
-  createdAt        DateTime          @default(now())
-  updatedAt        DateTime          @updatedAt
-  deletedAt        DateTime?
-  avatar           String?
-  firebaseUid      String?           @unique
-  lastLogin        DateTime?
-  status           UserStatus        @default(ONLINE)
-  files            File[]
-  notifications    Notification[]
-  refreshTokens    RefreshToken[]
-  roomMembers      RoomMember[]
-  tasks            Task[]
-  trackingSessions TrackingSession[]
+  id            String         @id @default(uuid())
+  email         String         @unique
+  password      String?
+  firstName     String?
+  lastName      String?
+  role          Role           @default(USER)
+  isActive      Boolean        @default(true)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  deletedAt     DateTime?
+  avatar        String?
+  firebaseUid   String?        @unique
+  lastLogin     DateTime?
+  files         File[]
+  notifications Notification[]
+  refreshTokens RefreshToken[]
 
   @@index([email])
   @@index([role])
   @@index([firebaseUid])
-  @@index([status])
   @@map("users")
 }
 
@@ -85,130 +80,8 @@ model File {
   @@map("files")
 }
 
-model Task {
-  id               String            @id @default(uuid())
-  name             String
-  estimateHours    Decimal           @db.Decimal(10, 2)
-  deadline         DateTime
-  status           TaskStatus        @default(PLANNED)
-  isActive         Boolean           @default(false)
-  userId           String
-  createdAt        DateTime          @default(now())
-  updatedAt        DateTime          @updatedAt
-  progress         Float             @default(0)
-  totalTimeSpent   Int               @default(0)
-  user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
-  trackingSessions TrackingSession[]
-
-  @@index([userId])
-  @@index([userId, isActive])
-  @@index([userId, status])
-  @@map("tasks")
-}
-
-model Room {
-  id              String         @id @default(uuid())
-  type            RoomType       @default(PUBLIC)
-  topic           String?        // For PUBLIC rooms: 'math', 'coding', etc. For MATCH: null
-  visibility      RoomVisibility @default(PUBLIC)
-  status          RoomStatus     @default(WAITING)
-  maxMembers      Int            @default(2)
-  createdAt       DateTime       @default(now())
-  updatedAt       DateTime       @updatedAt
-  endedAt         DateTime?
-  livekitRoomName String?        @unique
-  startedAt       DateTime?
-  members         RoomMember[]
-
-  @@index([type, status])
-  @@index([topic])
-  @@index([visibility, status])
-  @@index([livekitRoomName])
-  @@map("rooms")
-}
-
-model RoomMember {
-  id       String           @id @default(uuid())
-  roomId   String
-  userId   String
-  status   RoomMemberStatus @default(JOINED)
-  joinedAt DateTime         @default(now())
-  leftAt   DateTime?
-  readyAt  DateTime?
-  room     Room             @relation(fields: [roomId], references: [id], onDelete: Cascade)
-  user     User             @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([roomId, userId])
-  @@index([roomId])
-  @@index([userId])
-  @@map("room_members")
-}
-
-model TrackingSession {
-  id               String        @id @default(uuid())
-  taskId           String
-  userId           String
-  startTime        DateTime
-  endTime          DateTime?
-  duration         Int           @default(0)
-  status           SessionStatus @default(active)
-  expEarned        Float         @default(0)
-  createdAt        DateTime      @default(now())
-  updatedAt        DateTime      @updatedAt
-  previousProgress Float         @default(0)
-  task             Task          @relation(fields: [taskId], references: [id], onDelete: Cascade)
-  user             User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@index([taskId])
-  @@index([userId])
-  @@index([taskId, status])
-  @@index([userId, status])
-  @@map("tracking_sessions")
-}
-
 enum Role {
   USER
   ADMIN
   MODERATOR
-}
-
-enum TaskStatus {
-  PLANNED
-  ACTIVE
-  DONE
-}
-
-enum UserStatus {
-  ONLINE
-  MATCHING
-  IN_ROOM
-  OFFLINE
-}
-
-enum RoomType {
-  MATCH
-  PUBLIC
-}
-
-enum RoomVisibility {
-  PUBLIC
-  PRIVATE
-}
-
-enum RoomStatus {
-  WAITING
-  ACTIVE
-  CLOSED
-}
-
-enum RoomMemberStatus {
-  JOINED
-  READY
-  LEFT
-}
-
-enum SessionStatus {
-  active
-  paused
-  stopped
 }
