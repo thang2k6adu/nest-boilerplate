@@ -89,7 +89,9 @@ export class AuthService {
     return this.generateTokens(user);
   }
 
-  async refreshToken(refreshToken: string): Promise<{ accessToken: string; expiresIn: number }> {
+  async refreshToken(
+    refreshToken: string,
+  ): Promise<{ accessToken: string; refreshToken: string; expiresIn: number }> {
     try {
       await this.jwtService.verifyAsync(refreshToken, {
         secret: this.configService.get<string>('jwt.refreshSecret'),
@@ -125,6 +127,7 @@ export class AuthService {
 
       return {
         accessToken: tokens.tokens.accessToken,
+        refreshToken: tokens.tokens.refreshToken,
         expiresIn: tokens.tokens.expiresIn,
       };
     } catch (error) {

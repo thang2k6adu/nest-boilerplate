@@ -168,6 +168,7 @@ export class AuthController {
         message: 'Refresh success',
         data: {
           accessToken: 'NEW_ACCESS_TOKEN',
+          refreshToken: 'NEW_REFRESH_TOKEN',
           expiresIn: 900,
         },
         traceId: 'REFRESH112',
